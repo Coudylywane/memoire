@@ -305,5 +305,53 @@ public class ParametrageService {
     public List<CategorieFournisseur> getAllCategorieFournisseur() {
         return categorieFournisseurRepository.findAll();
     }
+
+    /// / //////////////////// TYPE FOURNISSEUR //////////////////////////////////////////////////////////
+    //AJOUT
+    public TypeFournisseur addTypeFournisseur(TypeFournisseur typeFournisseur) {
+        try {
+            typeFournisseurRepository.save(typeFournisseur);
+            return typeFournisseur;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public TypeFournisseur updateTypeFournisseur(TypeFournisseur updatedTypeFournisseur) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            TypeFournisseur existingTypeFournisseur = typeFournisseurRepository.findById(updatedTypeFournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + updatedTypeFournisseur.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingTypeFournisseur.setDesignation(updatedTypeFournisseur.getDesignation());
+            existingTypeFournisseur.setDescription(updatedTypeFournisseur.getDescription());
+
+            // Enregistrer la mise à jour dans la base de données
+            typeFournisseurRepository.save(existingTypeFournisseur);
+
+            // Retourner la zone mise à jour
+            return existingTypeFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteTypeFournisseur(Long typeFournisseurId) {
+        TypeFournisseur existingTypeFournisseur = typeFournisseurRepository.findById(typeFournisseurId)
+                .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + typeFournisseurId));
+
+        existingTypeFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        typeFournisseurRepository.save(existingTypeFournisseur);
+    }
+
+    //LISTE
+    public List<TypeFournisseur> getAllTypeFournisseur() {
+        return typeFournisseurRepository.findAll();
+    }
+
 }
 

@@ -241,4 +241,52 @@ public class ParametrageController {
     }
 
 
+    ////////////////////////////////////// TYPE FOURNISSEUR ///////////////////////////////////////////////////////
+
+    @PostMapping("/type-fournisseur")
+    public ResponseEntity<TypeFournisseur> addTypeFournisseur(@RequestBody TypeFournisseur newCategorieFournisseur) {
+        try {
+            // Enregistrez le nouveau ZoneStock avec le statut défini sur 0 par défaut
+            newCategorieFournisseur.setStatus(0);
+            TypeFournisseur savedCategorieFournisseur = parametrageService.addTypeFournisseur(newCategorieFournisseur);
+
+            return ResponseEntity.ok(savedCategorieFournisseur);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
+    @GetMapping("/type-fournisseur")
+    public ResponseEntity<?> getAllTypeFournisseur() {
+        List<CategorieFournisseur> categories = parametrageService.getAllCategorieFournisseur();
+        return ResponseEntity.ok(categories);
+    }
+
+    @PutMapping("/type-fournisseur/{id}")
+    public ResponseEntity<?> updateTypeFournisseur(@PathVariable Long id, @RequestBody TypeFournisseur updatedTypeFournisseur) {
+        try {
+            updatedTypeFournisseur.setId(id);
+            updatedTypeFournisseur.setStatus(0);
+
+            TypeFournisseur updated = parametrageService.updateTypeFournisseur(updatedTypeFournisseur);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TypeFournisseur not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/type-fournisseur/{id}")
+    public ResponseEntity<?> softDeleteTypeFournisseur(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteTypeFournisseur(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TypeFournisseur not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
