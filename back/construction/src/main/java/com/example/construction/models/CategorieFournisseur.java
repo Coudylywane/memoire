@@ -21,5 +21,12 @@ public class CategorieFournisseur {
     private Long id;
     private String designation;
     private String description;
+
+    private int status = 0;
+
+    // Méthode pour la suppression logique
+    public void softDelete() {
+        this.status = 1;
+    }
     
 }

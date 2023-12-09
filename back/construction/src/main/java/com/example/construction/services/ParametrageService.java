@@ -27,6 +27,11 @@ public class ParametrageService {
     private final ZoneStockRepository zoneStockRepository;
     private final UniteMesureRepository uniteMesureRepository;
     private final FamilleArticleRepository familleArticleRepository;
+    private final CategorieFournisseurRepository categorieFournisseurRepository;
+    private final ContactFournisseurRepository contactFournistRepository;
+    private final FournisseurRepository fournisseurRepository;
+    private final ReglementFournisseurRepository reglementFournisseurRepository;
+    private final TypeFournisseurRepository typeFournisseurRepository;
 
     /// / //////////////////// ZONE //////////////////////////////////////////////////////////
     //AJOUT
@@ -253,5 +258,52 @@ public class ParametrageService {
         return typeArticle;
     }
 
+
+    /// / //////////////////// CATEGORIE FOURNISSEUR //////////////////////////////////////////////////////////
+    //AJOUT
+    public CategorieFournisseur addCategorieFournisseur(CategorieFournisseur categorieFournisseur) {
+        try {
+            categorieFournisseurRepository.save(categorieFournisseur);
+            return categorieFournisseur;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public CategorieFournisseur updateCategorieFournisseur(CategorieFournisseur updatedCategorieFournisseur) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            CategorieFournisseur existingCategorieFournisseur = categorieFournisseurRepository.findById(updatedCategorieFournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + updatedCategorieFournisseur.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingCategorieFournisseur.setDesignation(updatedCategorieFournisseur.getDesignation());
+            existingCategorieFournisseur.setDescription(updatedCategorieFournisseur.getDescription());
+
+            // Enregistrer la mise à jour dans la base de données
+            categorieFournisseurRepository.save(existingCategorieFournisseur);
+
+            // Retourner la zone mise à jour
+            return existingCategorieFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteCategorieFournisseur(Long categorieFournisseurId) {
+        CategorieFournisseur existingCategorieFournisseur = categorieFournisseurRepository.findById(categorieFournisseurId)
+                .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + categorieFournisseurId));
+
+        existingCategorieFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        categorieFournisseurRepository.save(existingCategorieFournisseur);
+    }
+
+    //LISTE
+    public List<CategorieFournisseur> getAllCategorieFournisseur() {
+        return categorieFournisseurRepository.findAll();
+    }
 }
 

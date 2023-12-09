@@ -24,6 +24,12 @@ public class ContactFournisseur {
     private String nom;
     private String telephone;
     private String email;
+    private int status = 0;
+
+    // Méthode pour la suppression logique
+    public void softDelete() {
+        this.status = 1;
+    }
 
 
     @ManyToOne

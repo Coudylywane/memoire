@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.example.construction.models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.construction.models.FamilleArticle;
-import com.example.construction.models.TypeArticle;
-import com.example.construction.models.UniteMesure;
-import com.example.construction.models.ZoneStock;
 import com.example.construction.request.TypeArticleRequest;
 import com.example.construction.services.ParametrageService;
 
@@ -194,7 +191,54 @@ public class ParametrageController {
         return ResponseEntity.ok(addedTypeArticle);
     }
 
+////////////////////////////////////// CATEGORIE FOURNISSEUR ///////////////////////////////////////////////////////
 
+    @PostMapping("/categorie-fournisseur")
+    public ResponseEntity<CategorieFournisseur> addCategorieFournisseur(@RequestBody CategorieFournisseur newCategorieFournisseur) {
+        try {
+            // Enregistrez le nouveau ZoneStock avec le statut défini sur 0 par défaut
+            newCategorieFournisseur.setStatus(0);
+            CategorieFournisseur savedCategorieFournisseur = parametrageService.addCategorieFournisseur(newCategorieFournisseur);
+
+            return ResponseEntity.ok(savedCategorieFournisseur);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
+    @GetMapping("/categorie-fournisseur")
+    public ResponseEntity<?> getAllCategorieFournisseur() {
+        List<CategorieFournisseur> categories = parametrageService.getAllCategorieFournisseur();
+        return ResponseEntity.ok(categories);
+    }
+
+    @PutMapping("/categorie-fournisseur/{id}")
+    public ResponseEntity<?> updateCategorieFournisseur(@PathVariable Long id, @RequestBody CategorieFournisseur updatedCategorieFournisseur) {
+        try {
+            updatedCategorieFournisseur.setId(id);
+            updatedCategorieFournisseur.setStatus(0);
+
+            CategorieFournisseur updated = parametrageService.updateCategorieFournisseur(updatedCategorieFournisseur);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Zone not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/categorie-fournisseur/{id}")
+    public ResponseEntity<?> softDeleteCategorieFournisseur(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteCategorieFournisseur(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Zone not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 
 }

@@ -28,6 +28,13 @@ public class Fournisseur {
     private String totalVersement;
     private String solde;
 
+    private int status = 0;
+
+    // Méthode pour la suppression logique
+    public void softDelete() {
+        this.status = 1;
+    }
+
     @ManyToOne
     @JoinColumn(name = "categorie", referencedColumnName = "id")
     private CategorieFournisseur categorieFournisseur;
