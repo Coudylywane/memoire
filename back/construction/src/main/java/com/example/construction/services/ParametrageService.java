@@ -353,5 +353,52 @@ public class ParametrageService {
         return typeFournisseurRepository.findAll();
     }
 
+    //////////////////////////////////////////// CONTACT FOURNISSEUR ///////////////////////////////////////////
+
+    //CREATION
+    public ContactFournisseur createContactFournisseur(ContactFournisseur contactFournisseur) {
+        try {
+            contactFournistRepository.save(contactFournisseur);
+            return contactFournisseur;
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public ContactFournisseur updateContactFournisseur(ContactFournisseur updatedContactFournisseur) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            ContactFournisseur existingContactFournisseur = contactFournistRepository.findById(updatedContactFournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Contact not found with id: " + updatedContactFournisseur.getId()));
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingContactFournisseur.setNom(updatedContactFournisseur.getNom());
+            existingContactFournisseur.setTelephone(updatedContactFournisseur.getTelephone());
+            existingContactFournisseur.setEmail(updatedContactFournisseur.getEmail());
+
+            // Enregistrer la mise à jour dans la base de données
+            categorieFournisseurRepository.save(existingContactFournisseur);
+
+            // Retourner la zone mise à jour
+            return existingContactFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+
+        // Suppression logique
+        public void softDeleteContactFournisseur(Long contactFournisseurId) {
+            ContactFournisseur existingContactFournisseur = categorieFournisseurRepository.findById(contactFournisseurId)
+                    .orElseThrow(() -> new EntityNotFoundException("Contact not found with id: " + contactFournisseurId));
+
+            existingContactFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+            typeFournisseurRepository.save(existingContactFournisseur);
+        }
+
+        //LISTE
+        public List<ContactFournisseur> getAllTypeFournisseur() {
+            return categorieFournisseurRepository.findAll();
+        }
+    }
 }
 
