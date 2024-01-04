@@ -396,7 +396,7 @@ public class ParametrageService {
         }
 
         //LISTE
-        public List<ContactFournisseur> getAllTypeFournisseur() {
+        public List<ContactFournisseur> getAllContactFournisseur() {
             return categorieFournisseurRepository.findAll();
         }
     }

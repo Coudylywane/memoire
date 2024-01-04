@@ -256,7 +256,7 @@ public class ParametrageController {
 
     @GetMapping("/type-fournisseur")
     public ResponseEntity<?> getAllTypeFournisseur() {
-        List<CategorieFournisseur> categories = parametrageService.getAllCategorieFournisseur();
+        List<TypeFournisseur> categories = parametrageService.getAllTypeFournisseur();
         return ResponseEntity.ok(categories);
     }
 
@@ -281,6 +281,53 @@ public class ParametrageController {
             return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TypeFournisseur not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
+    ////////////////////////////////////// CONTACT FOURNISSEUR ///////////////////////////////////////////////////////
+
+    @PostMapping("/contact-fournisseur")
+    public ResponseEntity<ContactFournisseur> addContactFournisseur(@RequestBody ContactFournisseur newContactFournisseur) {
+        try {
+            // Enregistrez le nouveau CONTACT FOURNISSEUR avec le statut défini sur 0 par défaut
+            newContactFournisseur.setStatus(0);
+            ContactFournisseur savedCategorieFournisseur = parametrageService.createContactFournisseur(newContactFournisseur);
+            return ResponseEntity.ok(savedCategorieFournisseur);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/contact-fournisseur")
+    public ResponseEntity<?> getAllContactFournisseur() {
+        List<ContactFournisseur> contacts = parametrageService.getAllContactFournisseur();
+        return ResponseEntity.ok(contacts);
+    }
+
+    @PutMapping("/contact-fournisseur/{id}")
+    public ResponseEntity<?> updateContactFournisseur(@PathVariable Long id, @RequestBody ContactFournisseur updatedContactFournisseur) {
+        try {
+            updatedContactFournisseur.setId(id);
+            updatedContactFournisseur.setStatus(0);
+            ContactFournisseur updated = parametrageService.updateContactFournisseur(updatedContactFournisseur);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ContactFournisseur not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/contact-fournisseur/{id}")
+    public ResponseEntity<?> softDeleteContactFournisseur(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteContactFournisseur(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ContactFournisseur not found with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
