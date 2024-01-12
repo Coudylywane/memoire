@@ -1,14 +1,14 @@
 package com.example.construction.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,5 +28,8 @@ public class CategorieFournisseur {
     public void softDelete() {
         this.status = 1;
     }
+
+    @OneToMany(mappedBy = "fournisseurs", cascade = CascadeType.ALL)
+    private List<Fournisseur> fournisseurs;
     
 }

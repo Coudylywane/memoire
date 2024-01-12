@@ -399,5 +399,78 @@ public class ParametrageService {
     public List<ContactFournisseur> getAllContactFournisseur() {
         return contactFournistRepository.findAll();
     }
+/////////////////////////////////// FOURNISSEUR //////////////////////////////////////////////
+/////// AJOUT
+    public Fournisseur addFournisseur(Fournisseur fournisseur) {
+        try {
+            fournisseurRepository.save(fournisseur);
+            return fournisseur;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    //MODIFICATION
+    @Transactional
+    public Fournisseur updateFournisseur(Fournisseur fournisseur) {
+        try {
+            // Vérifier si la famille que vous souhaitez mettre à jour existe dans la base de données
+            Fournisseur existingFournisseur = fournisseurRepository.findById(fournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Famille not found with id: " + fournisseur.getId()));
+
+            // Mettre à jour les propriétés de la famille existante avec les nouvelles valeurs
+            existingFournisseur.setNom(fournisseur.getNom());
+            existingFournisseur.setAdresse(fournisseur.getAdresse());
+            existingFournisseur.setTelephone(fournisseur.getTelephone());
+            existingFournisseur.setNom(fournisseur.getAdresse());
+            existingFournisseur.setEmail(fournisseur.getEmail());
+            existingFournisseur.setTotalVersement(fournisseur.getTotalVersement());
+            existingFournisseur.setSolde(fournisseur.getSolde());
+
+            // Enregistrer la mise à jour dans la base de données
+            fournisseurRepository.save(existingFournisseur);
+
+            // Retourner la famille mise à jour
+            return existingFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public Fournisseur softDeleteFournisseur(Long familleId) {
+        Fournisseur existingFournisseur = fournisseurRepository.findById(familleId)
+                .orElseThrow(() -> new EntityNotFoundException("Fournisseur not found with id: " + familleId));
+
+        existingFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        fournisseurRepository.save(existingFournisseur);
+        return existingFournisseur == null ? null : existingFournisseur;
+    }
+
+    //LISTE
+    public List<Fournisseur> getAllFournisseur() {
+        return fournisseurRepository.findAll();
+    }
+
+    //LISTE + TYPE
+    @Transactional()
+    public List<Fournisseur> getAllFournisseurWithTypes() {
+        List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+
+        return fournisseurs.stream()
+                .map(fournisseur -> new Fournisseur(
+                        fournisseur.getId(),
+                        fournisseur.getNom(),
+                        fournisseur.getAdresse(),
+                        fournisseur.getTelephone(),
+                        fournisseur.getEmail(),
+                        fournisseur.getTotalVersement(),
+                        fournisseur.getSolde(),
+                        fournisseur.getStatus(),
+                        fournisseur.getCategorieFournisseur(),
+                        fournisseur.getTypeFournisseur(),
+                        fournisseur.getContactFournisseur()))
+                .collect(Collectors.toList());
+    }
 }
 
