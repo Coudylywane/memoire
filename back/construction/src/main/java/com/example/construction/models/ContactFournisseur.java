@@ -1,16 +1,13 @@
 package com.example.construction.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,8 +29,7 @@ public class ContactFournisseur {
     }
 
 
-    @ManyToOne
-    @JoinColumn(name = "fournisseur", referencedColumnName = "id")
-    private Fournisseur fournisseur;
+    @OneToMany(mappedBy = "fournisseurs", cascade = CascadeType.ALL)
+    private List<Fournisseur> fournisseurs;
 
 }
