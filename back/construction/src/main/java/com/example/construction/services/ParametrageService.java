@@ -377,7 +377,7 @@ public class ParametrageService {
             existingContactFournisseur.setEmail(updatedContactFournisseur.getEmail());
 
             // Enregistrer la mise à jour dans la base de données
-            categorieFournisseurRepository.save(existingContactFournisseur);
+            contactFournistRepository.save(existingContactFournisseur);
 
             // Retourner la zone mise à jour
             return existingContactFournisseur;
@@ -385,20 +385,19 @@ public class ParametrageService {
             // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
             throw e;
         }
+    }
+    // Suppression logique
+    public void softDeleteContactFournisseur(Long contactFournisseurId) {
+        ContactFournisseur existingContactFournisseur = contactFournistRepository.findById(contactFournisseurId)
+                .orElseThrow(() -> new EntityNotFoundException("Contact not found with id: " + contactFournisseurId));
 
-        // Suppression logique
-        public void softDeleteContactFournisseur(Long contactFournisseurId) {
-            ContactFournisseur existingContactFournisseur = categorieFournisseurRepository.findById(contactFournisseurId)
-                    .orElseThrow(() -> new EntityNotFoundException("Contact not found with id: " + contactFournisseurId));
+        existingContactFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        contactFournistRepository.save(existingContactFournisseur);
+    }
 
-            existingContactFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
-            typeFournisseurRepository.save(existingContactFournisseur);
-        }
-
-        //LISTE
-        public List<ContactFournisseur> getAllContactFournisseur() {
-            return categorieFournisseurRepository.findAll();
-        }
+    //LISTE
+    public List<ContactFournisseur> getAllContactFournisseur() {
+        return contactFournistRepository.findAll();
     }
 }
 
