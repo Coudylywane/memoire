@@ -27,6 +27,11 @@ public class ParametrageService {
     private final ZoneStockRepository zoneStockRepository;
     private final UniteMesureRepository uniteMesureRepository;
     private final FamilleArticleRepository familleArticleRepository;
+    private final CategorieFournisseurRepository categorieFournisseurRepository;
+    private final ContactFournisseurRepository contactFournistRepository;
+    private final FournisseurRepository fournisseurRepository;
+    private final ReglementFournisseurRepository reglementFournisseurRepository;
+    private final TypeFournisseurRepository typeFournisseurRepository;
 
     /// / //////////////////// ZONE //////////////////////////////////////////////////////////
     //AJOUT
@@ -253,5 +258,219 @@ public class ParametrageService {
         return typeArticle;
     }
 
+
+    /// / //////////////////// CATEGORIE FOURNISSEUR //////////////////////////////////////////////////////////
+    //AJOUT
+    public CategorieFournisseur addCategorieFournisseur(CategorieFournisseur categorieFournisseur) {
+        try {
+            categorieFournisseurRepository.save(categorieFournisseur);
+            return categorieFournisseur;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public CategorieFournisseur updateCategorieFournisseur(CategorieFournisseur updatedCategorieFournisseur) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            CategorieFournisseur existingCategorieFournisseur = categorieFournisseurRepository.findById(updatedCategorieFournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + updatedCategorieFournisseur.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingCategorieFournisseur.setDesignation(updatedCategorieFournisseur.getDesignation());
+            existingCategorieFournisseur.setDescription(updatedCategorieFournisseur.getDescription());
+
+            // Enregistrer la mise à jour dans la base de données
+            categorieFournisseurRepository.save(existingCategorieFournisseur);
+
+            // Retourner la zone mise à jour
+            return existingCategorieFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteCategorieFournisseur(Long categorieFournisseurId) {
+        CategorieFournisseur existingCategorieFournisseur = categorieFournisseurRepository.findById(categorieFournisseurId)
+                .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + categorieFournisseurId));
+
+        existingCategorieFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        categorieFournisseurRepository.save(existingCategorieFournisseur);
+    }
+
+    //LISTE
+    public List<CategorieFournisseur> getAllCategorieFournisseur() {
+        return categorieFournisseurRepository.findAll();
+    }
+
+    /// / //////////////////// TYPE FOURNISSEUR //////////////////////////////////////////////////////////
+    //AJOUT
+    public TypeFournisseur addTypeFournisseur(TypeFournisseur typeFournisseur) {
+        try {
+            typeFournisseurRepository.save(typeFournisseur);
+            return typeFournisseur;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public TypeFournisseur updateTypeFournisseur(TypeFournisseur updatedTypeFournisseur) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            TypeFournisseur existingTypeFournisseur = typeFournisseurRepository.findById(updatedTypeFournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + updatedTypeFournisseur.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingTypeFournisseur.setDesignation(updatedTypeFournisseur.getDesignation());
+            existingTypeFournisseur.setDescription(updatedTypeFournisseur.getDescription());
+
+            // Enregistrer la mise à jour dans la base de données
+            typeFournisseurRepository.save(existingTypeFournisseur);
+
+            // Retourner la zone mise à jour
+            return existingTypeFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteTypeFournisseur(Long typeFournisseurId) {
+        TypeFournisseur existingTypeFournisseur = typeFournisseurRepository.findById(typeFournisseurId)
+                .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + typeFournisseurId));
+
+        existingTypeFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        typeFournisseurRepository.save(existingTypeFournisseur);
+    }
+
+    //LISTE
+    public List<TypeFournisseur> getAllTypeFournisseur() {
+        return typeFournisseurRepository.findAll();
+    }
+
+    //////////////////////////////////////////// CONTACT FOURNISSEUR ///////////////////////////////////////////
+
+    //CREATION
+    public ContactFournisseur createContactFournisseur(ContactFournisseur contactFournisseur) {
+        try {
+            contactFournistRepository.save(contactFournisseur);
+            return contactFournisseur;
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public ContactFournisseur updateContactFournisseur(ContactFournisseur updatedContactFournisseur) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            ContactFournisseur existingContactFournisseur = contactFournistRepository.findById(updatedContactFournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Contact not found with id: " + updatedContactFournisseur.getId()));
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingContactFournisseur.setNom(updatedContactFournisseur.getNom());
+            existingContactFournisseur.setTelephone(updatedContactFournisseur.getTelephone());
+            existingContactFournisseur.setEmail(updatedContactFournisseur.getEmail());
+
+            // Enregistrer la mise à jour dans la base de données
+            contactFournistRepository.save(existingContactFournisseur);
+
+            // Retourner la zone mise à jour
+            return existingContactFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+    // Suppression logique
+    public void softDeleteContactFournisseur(Long contactFournisseurId) {
+        ContactFournisseur existingContactFournisseur = contactFournistRepository.findById(contactFournisseurId)
+                .orElseThrow(() -> new EntityNotFoundException("Contact not found with id: " + contactFournisseurId));
+
+        existingContactFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        contactFournistRepository.save(existingContactFournisseur);
+    }
+
+    //LISTE
+    public List<ContactFournisseur> getAllContactFournisseur() {
+        return contactFournistRepository.findAll();
+    }
+/////////////////////////////////// FOURNISSEUR //////////////////////////////////////////////
+/////// AJOUT
+    public Fournisseur addFournisseur(Fournisseur fournisseur) {
+        try {
+            fournisseurRepository.save(fournisseur);
+            return fournisseur;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    //MODIFICATION
+    @Transactional
+    public Fournisseur updateFournisseur(Fournisseur fournisseur) {
+        try {
+            // Vérifier si la famille que vous souhaitez mettre à jour existe dans la base de données
+            Fournisseur existingFournisseur = fournisseurRepository.findById(fournisseur.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Famille not found with id: " + fournisseur.getId()));
+
+            // Mettre à jour les propriétés de la famille existante avec les nouvelles valeurs
+            existingFournisseur.setNom(fournisseur.getNom());
+            existingFournisseur.setAdresse(fournisseur.getAdresse());
+            existingFournisseur.setTelephone(fournisseur.getTelephone());
+            existingFournisseur.setNom(fournisseur.getAdresse());
+            existingFournisseur.setEmail(fournisseur.getEmail());
+            existingFournisseur.setTotalVersement(fournisseur.getTotalVersement());
+            existingFournisseur.setSolde(fournisseur.getSolde());
+
+            // Enregistrer la mise à jour dans la base de données
+            fournisseurRepository.save(existingFournisseur);
+
+            // Retourner la famille mise à jour
+            return existingFournisseur;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public Fournisseur softDeleteFournisseur(Long familleId) {
+        Fournisseur existingFournisseur = fournisseurRepository.findById(familleId)
+                .orElseThrow(() -> new EntityNotFoundException("Fournisseur not found with id: " + familleId));
+
+        existingFournisseur.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        fournisseurRepository.save(existingFournisseur);
+        return existingFournisseur == null ? null : existingFournisseur;
+    }
+
+    //LISTE
+    public List<Fournisseur> getAllFournisseur() {
+        return fournisseurRepository.findAll();
+    }
+
+    //LISTE + TYPE
+    @Transactional()
+    public List<Fournisseur> getAllFournisseurWithTypes() {
+        List<Fournisseur> fournisseurs = fournisseurRepository.findAll();
+
+        return fournisseurs.stream()
+                .map(fournisseur -> new Fournisseur(
+                        fournisseur.getId(),
+                        fournisseur.getNom(),
+                        fournisseur.getAdresse(),
+                        fournisseur.getTelephone(),
+                        fournisseur.getEmail(),
+                        fournisseur.getTotalVersement(),
+                        fournisseur.getSolde(),
+                        fournisseur.getStatus(),
+                        fournisseur.getCategorieFournisseur(),
+                        fournisseur.getTypeFournisseur(),
+                        fournisseur.getContactFournisseur()))
+                .collect(Collectors.toList());
+    }
 }
 

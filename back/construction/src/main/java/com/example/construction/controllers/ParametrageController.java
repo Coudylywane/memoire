@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.example.construction.models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.construction.models.FamilleArticle;
-import com.example.construction.models.TypeArticle;
-import com.example.construction.models.UniteMesure;
-import com.example.construction.models.ZoneStock;
 import com.example.construction.request.TypeArticleRequest;
 import com.example.construction.services.ParametrageService;
 
@@ -192,5 +189,8 @@ public class ParametrageController {
         TypeArticle addedTypeArticle = parametrageService.addTypeArticleToFamily(typeArticleRequest);
         return ResponseEntity.ok(addedTypeArticle);
     }
+
+
+
 
 }

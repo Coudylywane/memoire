@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +29,25 @@ public class Fournisseur {
     private String totalVersement;
     private String solde;
 
+    private int status = 0;
+
+    // Méthode pour la suppression logique
+    public void softDelete() {
+        this.status = 1;
+    }
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categorie", referencedColumnName = "id")
     private CategorieFournisseur categorieFournisseur;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "type", referencedColumnName = "id")
     private TypeFournisseur typeFournisseur;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "contact", referencedColumnName = "id")
+    private ContactFournisseur contactFournisseur;
 }

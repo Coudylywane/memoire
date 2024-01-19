@@ -27,6 +27,12 @@ public class ReglementFournisseur {
     private String motif;
     private boolean typeReglement;
 
+    private int status = 0;
+
+    // Méthode pour la suppression logique
+    public void softDelete() {
+        this.status = 1;
+    }
     @ManyToOne
     @JoinColumn(name = "commande", referencedColumnName = "id")
     private Commande commande;
