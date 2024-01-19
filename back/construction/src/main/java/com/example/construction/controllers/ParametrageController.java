@@ -189,12 +189,8 @@ public class ParametrageController {
     @PostMapping("/typeArticles")
     public ResponseEntity<TypeArticle> addTypeArticleToFamily(
             @RequestBody TypeArticleRequest typeArticleRequest) {
-        
         TypeArticle addedTypeArticle = parametrageService.addTypeArticleToFamily(typeArticleRequest);
         return ResponseEntity.ok(addedTypeArticle);
     }
-
-
-
 
 }
