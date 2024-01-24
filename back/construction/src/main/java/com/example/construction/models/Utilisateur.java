@@ -1,11 +1,6 @@
 package com.example.construction.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +21,15 @@ public class Utilisateur {
     private String telephoneString;
     private String login;
     private String password;
+
+    @Column(nullable=true)
+    private String adresse;
+
+    @Column(nullable=true)
+    private String dateEmbauche;
+
+    @Column(nullable=true)
+    private int solde;
     
 
     @ManyToOne

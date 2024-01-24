@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.construction.repositories.ContactPrestataire;
 import org.springframework.stereotype.Service;
 
 import com.example.construction.models.*;
@@ -32,6 +33,10 @@ public class ParametrageService {
     private final FournisseurRepository fournisseurRepository;
     private final ReglementFournisseurRepository reglementFournisseurRepository;
     private final TypeFournisseurRepository typeFournisseurRepository;
+    private final TypePrestataireRepositori typePrestataireRepositori;
+    private final DepartementRepository departmentRepository;
+    private final ContactPrestataire contactPrestataireRepository;
+    private final FonctionRepository  fonctionRepository;
 
     /// / //////////////////// ZONE //////////////////////////////////////////////////////////
     //AJOUT
@@ -471,6 +476,54 @@ public class ParametrageService {
                         fournisseur.getTypeFournisseur(),
                         fournisseur.getContactFournisseur()))
                 .collect(Collectors.toList());
+    }
+
+    ///////////////////////////////////////// TYPE DE PRESTATAIRE ///////////////////////////////////////
+    /// / //////////////////// TypePrestataire //////////////////////////////////////////////////////////
+    //AJOUT
+    public TypePrestataire addTypePrestataire(TypePrestataire typePrestataire) {
+        try {
+            typePrestataireRepositori.save(typePrestataire);
+            return typePrestataire;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public TypePrestataire updateTypePrestataire(TypePrestataire updatedTypePrestataire) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            TypePrestataire existingTypePrestataire = typePrestataireRepositori.findById(updatedTypePrestataire.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("TypePrestataire not found with id: " + updatedTypePrestataire.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingTypePrestataire.setDesignation(updatedTypePrestataire.getDesignation());
+            existingTypePrestataire.setDescription(updatedTypePrestataire.getDescription());
+
+            // Enregistrer la mise à jour dans la base de données
+            typePrestataireRepositori.save(existingTypePrestataire);
+
+            // Retourner la zone mise à jour
+            return existingTypePrestataire;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteTypePrestataire(Long typePrestId) {
+        TypePrestataire existingTypePrestataire = typePrestataireRepositori.findById(typePrestId)
+                .orElseThrow(() -> new EntityNotFoundException("Zone not found with id: " + typePrestId));
+
+        existingTypePrestataire.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        typePrestataireRepositori.save(existingTypePrestataire);
+    }
+
+    //LISTE
+    public List<TypePrestataire> getAllTypePrestataire() {
+        return typePrestataireRepositori.findAll();
     }
 }
 
