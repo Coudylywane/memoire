@@ -525,5 +525,7 @@ public class ParametrageService {
     public List<TypePrestataire> getAllTypePrestataire() {
         return typePrestataireRepositori.findAll();
     }
+
+    ///////////////////////////////
 }
 
