@@ -190,9 +190,6 @@ public class ParametrageController {
         return ResponseEntity.ok(addedTypeArticle);
     }
 
-
-
-<<<<<<< HEAD
     ///////////////////////////////////// FOURNISSEURS ///////////////////////////////////////////////////////////
 
     @PostMapping("/fournisseur")
@@ -246,7 +243,53 @@ public class ParametrageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-=======
 
->>>>>>> cd38692e71b79136f937a18511c94a14f40c4f27
+    //////////////////////////////////// TYPE PRESTATAIRE /////////////////////////
+
+    @PostMapping("/typePre")
+    public ResponseEntity<TypePrestataire> addTypePrestataire(@RequestBody TypePrestataire newTypePrestataire) {
+        try {
+            // Enregistrez le nouveau ZoneStock avec le statut défini sur 0 par défaut
+            newTypePrestataire.setStatus(0);
+            TypePrestataire savedTypePrestataire = parametrageService.addTypePrestataire(newTypePrestataire);
+
+            return ResponseEntity.ok(savedTypePrestataire);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
+    @GetMapping("/typePre")
+    public ResponseEntity<?> getAllTypePrestataire() {
+        List<TypePrestataire> zone = parametrageService.getAllTypePrestataire();
+        return ResponseEntity.ok(zone);
+    }
+
+    @PutMapping("/typePre/{id}")
+    public ResponseEntity<?> updateTypePrestataire(@PathVariable Long id, @RequestBody TypePrestataire updatedTypePrestataire) {
+        try {
+            updatedTypePrestataire.setId(id);
+            updatedTypePrestataire.setStatus(0);
+
+            TypePrestataire updated = parametrageService.updateTypePrestataire(updatedTypePrestataire);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TypePrestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/typePre/{id}")
+    public ResponseEntity<?> softDeleteTypePrestataire(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteTypePrestataire(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TypePrestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
