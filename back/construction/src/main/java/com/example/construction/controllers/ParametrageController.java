@@ -341,4 +341,100 @@ public class ParametrageController {
         }
     }
 
+    //////////////////////////////////// DEPARTEMENT PRESTATAIRE /////////////////////////
+
+    @PostMapping("/departement-prestataire")
+    public ResponseEntity<Departement> addDepartementPrestataire(@RequestBody Departement newDepartement) {
+        try {
+            // Enregistrez le nouveau ZoneStock avec le statut défini sur 0 par défaut
+            newDepartement.setStatus(0);
+            Departement savedDepartement = parametrageService.addDepartement(newDepartement);
+
+            return ResponseEntity.ok(savedDepartement);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/departement-prestataire")
+    public ResponseEntity<?> getAllDepartement() {
+        List<Departement> departement = parametrageService.getAllDepartement();
+        return ResponseEntity.ok(departement);
+    }
+
+    @PutMapping("/departement-prestataire/{id}")
+    public ResponseEntity<?> updateDepartement(@PathVariable Long id, @RequestBody Departement updatedDepartement) {
+        try {
+            updatedDepartement.setId(id);
+            updatedDepartement.setStatus(0);
+
+            Departement updated = parametrageService.updateDepartement(updatedDepartement);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Departement Prestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/departement-prestataire/{id}")
+    public ResponseEntity<?> softDeleteDepartement(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteDepartement(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Departement Prestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    //////////////////////////////////// FONCTIONS PRESTATAIRE /////////////////////////
+
+    @PostMapping("/fonction-prestataire")
+    public ResponseEntity<Fonctions> addFonctionsPrestataire(@RequestBody Fonctions newFonctions) {
+        try {
+            // Enregistrez le nouveau ZoneStock avec le statut défini sur 0 par défaut
+            newFonctions.setStatus(0);
+            Fonctions savedFonctions = parametrageService.addFonctions(newFonctions);
+
+            return ResponseEntity.ok(savedFonctions);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/fonction-prestataire")
+    public ResponseEntity<?> getAllFonctions() {
+        List<Fonctions> fonctions = parametrageService.getAllFonctions();
+        return ResponseEntity.ok(fonctions);
+    }
+
+    @PutMapping("/fonction-prestataire/{id}")
+    public ResponseEntity<?> updateFonctions(@PathVariable Long id, @RequestBody Fonctions updatedFonctions) {
+        try {
+            updatedFonctions.setId(id);
+            updatedFonctions.setStatus(0);
+
+            Fonctions updated = parametrageService.updateFonctions(updatedFonctions);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fonctions Prestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/fonction-prestataire/{id}")
+    public ResponseEntity<?> softDeleteFonctions(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteFonctions(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fonctions Prestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }
