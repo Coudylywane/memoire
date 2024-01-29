@@ -292,4 +292,52 @@ public class ParametrageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    //////////////////////////////////// CONTACT PRESTATAIRE /////////////////////////
+
+    @PostMapping("/contact-prestataire")
+    public ResponseEntity<ContactPrestataire> addContactPrestataire(@RequestBody ContactPrestataire newContactPrestataire) {
+        try {
+            // Enregistrez le nouveau ZoneStock avec le statut défini sur 0 par défaut
+            newContactPrestataire.setStatus(0);
+            ContactPrestataire savedContactPrestataire = parametrageService.addContactPrestataire(newContactPrestataire);
+
+            return ResponseEntity.ok(savedContactPrestataire);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/contact-prestataire")
+    public ResponseEntity<?> getAllContactPrestataire() {
+        List<ContactPrestataire> contact = parametrageService.getAllContactPrestataire();
+        return ResponseEntity.ok(contact);
+    }
+
+    @PutMapping("/contact-prestataire/{id}")
+    public ResponseEntity<?> updateContactPrestataire(@PathVariable Long id, @RequestBody ContactPrestataire updatedContactPrestataire) {
+        try {
+            updatedContactPrestataire.setId(id);
+            updatedContactPrestataire.setStatus(0);
+
+            ContactPrestataire updated = parametrageService.updateContactPrestataire(updatedContactPrestataire);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact Prestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/contact-prestataire/{id}")
+    public ResponseEntity<?> softDeleteContactPrestataire(@PathVariable Long id) {
+        try {
+            parametrageService.softDeleteContactPrestataire(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact Prestataire not found with id: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
