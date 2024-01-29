@@ -287,7 +287,7 @@ public class ParametrageController {
             parametrageService.softDeleteTypePrestataire(id);
             return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("TypePrestataire not found with id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Type Prestataire not found with id: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

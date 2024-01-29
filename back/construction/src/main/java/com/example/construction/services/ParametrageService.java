@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.example.construction.repositories.ContactPrestataire;
+import com.example.construction.repositories.ContactPrestataireRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.construction.models.*;
@@ -35,7 +35,7 @@ public class ParametrageService {
     private final TypeFournisseurRepository typeFournisseurRepository;
     private final TypePrestataireRepositori typePrestataireRepositori;
     private final DepartementRepository departmentRepository;
-    private final ContactPrestataire contactPrestataireRepository;
+    private final ContactPrestataireRepository contactPrestataireRepository;
     private final FonctionRepository  fonctionRepository;
 
     /// / //////////////////// ZONE //////////////////////////////////////////////////////////
@@ -479,7 +479,6 @@ public class ParametrageService {
     }
 
     ///////////////////////////////////////// TYPE DE PRESTATAIRE ///////////////////////////////////////
-    /// / //////////////////// TypePrestataire //////////////////////////////////////////////////////////
     //AJOUT
     public TypePrestataire addTypePrestataire(TypePrestataire typePrestataire) {
         try {
@@ -526,6 +525,53 @@ public class ParametrageService {
         return typePrestataireRepositori.findAll();
     }
 
-    ///////////////////////////////
+    /////////////////////////////// CONTACT PRESTATAIRE /////////////////////////////
+
+    //AJOUT
+    public ContactPrestataire addContactPrestataire(ContactPrestataire contactPrestataire) {
+        try {
+            contactPrestataireRepository.save(contactPrestataire);
+            return contactPrestataire;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public ContactPrestataire updateContactPrestataire(ContactPrestataire updatedContactPrestataire) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            ContactPrestataire existingContactPrestataire = contactPrestataireRepository.findById(updatedContactPrestataire.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("ContactPrestataire not found with id: " + updatedContactPrestataire.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingContactPrestataire.setNom(updatedContactPrestataire.getNom());
+            existingContactPrestataire.setEmail(updatedContactPrestataire.getEmail());
+            existingContactPrestataire.setTelephone(updatedContactPrestataire.getTelephone());
+
+            // Enregistrer la mise à jour dans la base de données
+            contactPrestataireRepository.save(existingContactPrestataire);
+
+            // Retourner la zone mise à jour
+            return existingContactPrestataire;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteContactPrestataire(Long contactId) {
+        ContactPrestataire existingContactPrestataire = contactPrestataireRepository.findById(contactId)
+                .orElseThrow(() -> new EntityNotFoundException("contactId not found with id: " + contactId));
+
+        existingContactPrestataire.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        contactPrestataireRepository.save(existingContactPrestataire);
+    }
+
+    //LISTE
+    public List<ContactPrestataire> getAllContactPrestataire() {
+        return contactPrestataireRepository.findAll();
+    }
 }
 
