@@ -573,5 +573,103 @@ public class ParametrageService {
     public List<ContactPrestataire> getAllContactPrestataire() {
         return contactPrestataireRepository.findAll();
     }
+
+    /////////////////////////////// DEPARTEMENT PRESTATAIRE /////////////////////////////
+
+    //AJOUT
+    public Departement addDepartement(Departement departement) {
+        try {
+            departmentRepository.save(departement);
+            return departement;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public Departement updateDepartement(Departement updatedDepartement) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            Departement existingDepartement = departmentRepository.findById(updatedDepartement.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Departement not found with id: " + updatedDepartement.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingDepartement.setChefDepartement(updatedDepartement.getChefDepartement());
+            existingDepartement.setDesignation(updatedDepartement.getDesignation());
+           // existingDepartement.set(updatedDepartement.getTelephone());
+
+            // Enregistrer la mise à jour dans la base de données
+            departmentRepository.save(existingDepartement);
+
+            // Retourner la zone mise à jour
+            return existingDepartement;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteDepartement(Long departementtId) {
+        Departement existingDepartement = departmentRepository.findById(departementtId)
+                .orElseThrow(() -> new EntityNotFoundException("contactId not found with id: " + departementtId));
+
+        existingDepartement.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        departmentRepository.save(existingDepartement);
+    }
+
+    //LISTE
+    public List<Departement> getAllDepartement() {
+        return departmentRepository.findAll();
+    }
+
+    /////////////////////////////// FONCTION PRESTATAIRE /////////////////////////////
+
+    //AJOUT
+    public Fonctions addFonctions(Fonctions fonctions) {
+        try {
+            fonctionRepository.save(fonctions);
+            return fonctions;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //MODIFICATION
+    public Fonctions updateFonctions(Fonctions updatedFonctions) {
+        try {
+            // Vérifier si la zone que vous souhaitez mettre à jour existe dans la base de données
+            Fonctions existingFonctions = fonctionRepository.findById(updatedFonctions.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Departement not found with id: " + updatedFonctions.getId()));
+
+            // Mettre à jour les propriétés de la zone existante avec les nouvelles valeurs
+            existingFonctions.setDescription(updatedFonctions.getDescription());
+            existingFonctions.setNom(updatedFonctions.getNom());
+            // existingDepartement.set(updatedDepartement.getTelephone());
+
+            // Enregistrer la mise à jour dans la base de données
+            fonctionRepository.save(existingFonctions);
+
+            // Retourner la zone mise à jour
+            return existingFonctions;
+        } catch (Exception e) {
+            // Gérer les exceptions, vous pouvez choisir de les logger ou de les relancer
+            throw e;
+        }
+    }
+
+    //Suppression
+    public void softDeleteFonctions(Long fonctionsId) {
+        Fonctions existingFonctions = fonctionRepository.findById(fonctionsId)
+                .orElseThrow(() -> new EntityNotFoundException("Fonctions not found with id: " + fonctionsId));
+
+        existingFonctions.softDelete(); // Utilisez la méthode de suppression logique définie dans l'entité
+        fonctionRepository.save(existingFonctions);
+    }
+
+    //LISTE
+    public List<Fonctions> getAllFonctions() {
+        return fonctionRepository.findAll();
+    }
 }
 
